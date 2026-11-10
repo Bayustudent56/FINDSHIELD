@@ -1,7 +1,0 @@
-{
-  "version": 2,
-  "framework": "other",
-  "routes": [
-    { "src": "/(.*)", "dest": "/" }
-  ]
-}
