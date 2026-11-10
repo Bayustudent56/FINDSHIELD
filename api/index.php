@@ -1,0 +1,1 @@
+?php require __DIR__ . '/../routes/web.php';" > api/index.php
