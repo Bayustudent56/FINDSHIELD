@@ -1,10 +1,10 @@
-@extends('layouts.app')
+{% extends "layouts/base.html" %}
 
-@section('title', 'Edukasi judol')
-@section('page', 'Edukasi judol')
+{% block title %}Edukasi judol{% endblock %}
+{% block page %}Edukasi judol{% endblock %}
 
-@section('content')
-<div x-data="judolSim(@js($defaults))" x-cloak class="space-y-6">
+{% block content %}
+<div x-data='judolSim({{ defaults|tojson }})' x-cloak class="space-y-6">
 
     <header>
         <p class="fs-eyebrow">Pahami risiko • Simulasi edukasi</p>
@@ -13,7 +13,7 @@
     </header>
 
     <div class="flex gap-3 rounded-xl bg-warn-bg px-5 py-4 text-warn-text">
-        <x-icon name="info" class="mt-0.5 h-[18px] w-[18px] shrink-0" />
+        <span class="mt-0.5 shrink-0">{{ icon('info', 'h-[18px] w-[18px]') }}</span>
         <div>
             <p class="text-sm font-medium">Menang sesaat tidak menghapus risiko jangka panjang</p>
             <p class="mt-1 text-[13px] leading-relaxed">Nilai harapan negatif berarti rata-rata hasil model merugikan peserta. Hasil tiap individu tetap bervariasi; tidak berarti setiap orang pasti kalah.</p>
@@ -22,7 +22,7 @@
 
     <div class="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
 
-        {{-- Kolom kiri --}}
+        {# Kolom kiri #}
         <div class="space-y-5">
             <section class="fs-card">
                 <h2 class="fs-h2">Pengaturan model</h2>
@@ -87,7 +87,7 @@
                 <div class="mt-5">
                     <button type="button" class="fs-btn" x-on:click="acakUlang()">
                         <span x-text="sudahAcak ? 'Acak ulang simulasi' : 'Tampilkan simulasi'">Tampilkan simulasi</span>
-                        <x-icon name="chart" class="h-4 w-4" />
+                        {{ icon('chart', 'h-4 w-4') }}
                     </button>
                     <p class="mt-3 text-[11px] text-slate-400">Hasil otomatis diperbarui saat pengaturan diubah • klik untuk mengacak ulang</p>
                     <button type="button" class="mt-2 text-[11px] text-slate-500 underline-offset-2 hover:text-ink hover:underline" x-on:click="kembalikan()">Kembalikan ke contoh</button>
@@ -96,14 +96,14 @@
 
             <aside class="rounded-2xl bg-brand-mint p-5 text-brand">
                 <div class="flex items-center gap-2.5">
-                    <x-icon name="shield" class="h-[18px] w-[18px]" />
+                    {{ icon('shield', 'h-[18px] w-[18px]') }}
                     <h3 class="text-[15px] font-medium">Tidak ada pola pemulihan</h3>
                 </div>
                 <p class="mt-3 text-[13px] leading-relaxed">Hasil sebelumnya tidak mengubah peluang berikutnya pada model independen. Menaikkan nominal justru memperbesar eksposur kerugian.</p>
             </aside>
         </div>
 
-        {{-- Kolom kanan --}}
+        {# Kolom kanan #}
         <div class="space-y-5">
             <section class="fs-card">
                 <div class="flex items-start justify-between gap-3">
@@ -131,8 +131,8 @@
                     </div>
                 </div>
 
-                <p class="mt-4 flex items-start gap-2 rounded-lg bg-[#FBEDED] px-3 py-2 text-xs leading-relaxed text-[#9B3A40]" x-show="hasil.bangkrutDi !== null" x-transition>
-                    <x-icon name="alert" class="mt-px h-4 w-4 shrink-0" />
+                <p class="mt-4 flex items-start gap-2 rounded-lg bg-[#FBEDED] px-3 py-2 text-xs leading-relaxed text-[#9B3A40]" x-show="hasil.bangkrutDi !== null" x-cloak x-transition>
+                    <span class="mt-px shrink-0">{{ icon('alert', 'h-4 w-4') }}</span>
                     <span x-text="'Saldo tidak cukup untuk memasang nominal berikutnya setelah putaran ke-' + formatAngka(hasil.bangkrutDi, 0) + '. Sisa putaran tidak dimainkan.'"></span>
                 </p>
             </section>
@@ -162,12 +162,12 @@
 
             <section class="rounded-2xl bg-iris-soft p-6">
                 <div class="flex items-center gap-2.5 text-iris">
-                    <x-icon name="sigma" class="h-5 w-5" />
+                    {{ icon('sigma', 'h-5 w-5') }}
                     <h2 class="text-[18px] font-medium" x-text="'Nilai harapan: ' + formatRupiah(ev) + ' per putaran'">Nilai harapan: -Rp1.000 per putaran</h2>
                 </div>
                 <p class="mt-4 text-sm font-semibold text-ink" x-text="rumusEv">EV = (45% × Rp10.000) + (55% × -Rp10.000)</p>
                 <p class="mt-3 text-[13px] leading-relaxed text-slate-600" x-text="rincianEv">Menang memberi laba bersih Rp10.000; kalah memberi rugi Rp10.000.</p>
-                <p class="mt-3 rounded-lg bg-white/70 px-3 py-2 text-xs leading-relaxed text-slate-600" x-show="ev >= 0" x-transition>
+                <p class="mt-3 rounded-lg bg-white/70 px-3 py-2 text-xs leading-relaxed text-slate-600" x-show="ev >= 0" x-cloak x-transition>
                     Dengan pengaturan ini nilai harapan tidak negatif, artinya model justru menguntungkan peserta. Hampir tidak ada platform nyata yang dirancang seperti ini; coba turunkan peluang menang atau pengembalian untuk melihat kondisi yang lebih realistis.
                 </p>
             </section>
@@ -176,8 +176,8 @@
 
     <div class="grid gap-6 md:grid-cols-2">
         <section class="fs-card">
-            <div class="flex items-center gap-3">
-                <x-icon name="scale" class="h-5 w-5 text-brand" />
+            <div class="flex items-center gap-3 text-brand">
+                {{ icon('scale', 'h-5 w-5') }}
                 <h2 class="text-[18px] font-medium text-ink">House edge bukan trik yang bisa dikalahkan</h2>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-slate-500" x-show="houseEdge > 0"
@@ -187,25 +187,26 @@
         </section>
 
         <section class="fs-card">
-            <div class="flex items-center gap-3">
-                <x-icon name="sliders" class="h-5 w-5 text-brand" />
+            <div class="flex items-center gap-3 text-brand">
+                {{ icon('sliders', 'h-5 w-5') }}
                 <h2 class="text-[18px] font-medium text-ink">Alihkan fokus ke hal yang bisa dikendalikan</h2>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-slate-500">Beri jeda saat terdorong mengejar kerugian. Prioritaskan kebutuhan dan cadangan, lalu ajak orang tepercaya berdiskusi bila sulit berhenti.</p>
-            <a href="{{ route('kelola-uang') }}" class="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand hover:underline">
-                Susun alokasi uang di Kelola uang <x-icon name="arrow-right" class="h-3.5 w-3.5" />
+            <a href="{{ url_for('kelola_uang') }}" class="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand hover:underline">
+                Susun alokasi uang di Kelola uang {{ icon('arrow-right', 'h-3.5 w-3.5') }}
             </a>
         </section>
     </div>
 </div>
-@endsection
+{% endblock %}
 
-@push('scripts')
+{% block scripts %}
+{% raw %}
 <script>
     function judolSim(awal) {
         // Instance Chart.js disimpan di closure (bukan state Alpine) agar tidak dibungkus Proxy reaktif.
-        let chart = null;
-        let timer = null;
+        var chart = null;
+        var timer = null;
 
         return {
             saldoAwal: awal.saldoAwal,
@@ -223,7 +224,7 @@
                 menang: 0,
                 kalah: 0,
                 bangkrutDi: null,
-                interval: 1,
+                interval: 1
             },
 
             // ----- Nilai input yang sudah disanitasi -----
@@ -248,7 +249,7 @@
             },
 
             get rincianEv() {
-                const ev = this.ev;
+                var ev = this.ev;
                 return 'Menang memberi laba bersih ' + formatRupiah(this.laba) +
                     '; kalah memberi rugi ' + formatRupiah(this.rugi) +
                     '. Maka EV = ' + formatRupiah((this.pMenang / 100) * this.laba) +
@@ -262,18 +263,19 @@
 
             // ----- Siklus hidup -----
             init() {
+                var self = this;
                 this.buatChart();
                 this.jalankanSimulasi();
 
-                const kunci = ['saldoAwal', 'nominalPutaran', 'jumlahPutaran', 'peluangMenang', 'multiplierMenang'];
-                kunci.forEach((k) => {
-                    this.$watch(k, () => this.jadwalkan());
+                ['saldoAwal', 'nominalPutaran', 'jumlahPutaran', 'peluangMenang', 'multiplierMenang'].forEach(function (k) {
+                    self.$watch(k, function () { self.jadwalkan(); });
                 });
             },
 
             jadwalkan() {
+                var self = this;
                 clearTimeout(timer);
-                timer = setTimeout(() => this.jalankanSimulasi(), 120);
+                timer = setTimeout(function () { self.jalankanSimulasi(); }, 120);
             },
 
             acakUlang() {
@@ -292,24 +294,24 @@
 
             // ----- Simulasi Monte Carlo (1 lintasan acak) -----
             jalankanSimulasi() {
-                const n = this.putaran;
-                const nominal = this.nominal;
-                const laba = this.laba;
-                const rugi = this.rugi;
-                const peluang = this.pMenang;
-                const ev = this.ev;
-                const awalSaldo = this.saldo0;
-                const interval = Math.max(1, Math.floor(n / 50));
+                var n = this.putaran;
+                var nominal = this.nominal;
+                var laba = this.laba;
+                var rugi = this.rugi;
+                var peluang = this.pMenang;
+                var ev = this.ev;
+                var awalSaldo = this.saldo0;
+                var interval = Math.max(1, Math.floor(n / 50));
 
-                let saldo = awalSaldo;
-                let menang = 0;
-                let kalah = 0;
-                let bangkrutDi = null;
+                var saldo = awalSaldo;
+                var menang = 0;
+                var kalah = 0;
+                var bangkrutDi = null;
 
-                const aktual = [{ x: 0, y: awalSaldo }];
-                const harapan = [{ x: 0, y: awalSaldo }];
+                var aktual = [{ x: 0, y: awalSaldo }];
+                var harapan = [{ x: 0, y: awalSaldo }];
 
-                for (let r = 1; r <= n; r++) {
+                for (var r = 1; r <= n; r++) {
                     if (nominal > 0) {
                         if (saldo < nominal) {
                             // Saldo habis: tidak bisa memasang lagi, saldo berhenti.
@@ -337,7 +339,7 @@
                     menang: menang,
                     kalah: kalah,
                     bangkrutDi: bangkrutDi,
-                    interval: interval,
+                    interval: interval
                 };
 
                 this.perbaruiChart(aktual, harapan, n);
@@ -347,7 +349,7 @@
 
             // ----- Chart.js -----
             buatChart() {
-                const ctx = this.$refs.canvas.getContext('2d');
+                var ctx = this.$refs.canvas.getContext('2d');
 
                 chart = new Chart(ctx, {
                     type: 'line',
@@ -362,7 +364,7 @@
                                 pointRadius: 0,
                                 pointHoverRadius: 4,
                                 tension: 0.12,
-                                order: 1,
+                                order: 1
                             },
                             {
                                 label: 'Saldo harapan matematis',
@@ -373,9 +375,9 @@
                                 borderDash: [6, 5],
                                 pointRadius: 0,
                                 pointHoverRadius: 3,
-                                order: 2,
-                            },
-                        ],
+                                order: 2
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
@@ -387,9 +389,9 @@
                             tooltip: {
                                 callbacks: {
                                     title: function (items) { return 'Putaran ke-' + formatAngka(items[0].parsed.x, 0); },
-                                    label: function (item) { return ' ' + item.dataset.label + ': ' + formatRupiah(item.parsed.y); },
-                                },
-                            },
+                                    label: function (item) { return ' ' + item.dataset.label + ': ' + formatRupiah(item.parsed.y); }
+                                }
+                            }
                         },
                         scales: {
                             x: {
@@ -401,8 +403,8 @@
                                     maxTicksLimit: 6,
                                     callback: function (v, i, ticks) {
                                         return i === ticks.length - 1 ? formatAngka(v, 0) + ' putaran' : formatAngka(v, 0);
-                                    },
-                                },
+                                    }
+                                }
                             },
                             y: {
                                 suggestedMin: 0,
@@ -410,11 +412,11 @@
                                 border: { display: false },
                                 ticks: {
                                     maxTicksLimit: 6,
-                                    callback: function (v) { return formatRingkas(v); },
-                                },
-                            },
-                        },
-                    },
+                                    callback: function (v) { return formatRingkas(v); }
+                                }
+                            }
+                        }
+                    }
                 });
             },
 
@@ -424,8 +426,9 @@
                 chart.data.datasets[1].data = harapan;
                 chart.options.scales.x.max = n;
                 chart.update();
-            },
+            }
         };
     }
 </script>
-@endpush
+{% endraw %}
+{% endblock %}

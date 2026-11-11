@@ -1,10 +1,10 @@
-@extends('layouts.app')
+{% extends "layouts/base.html" %}
 
-@section('title', 'Kalkulator pinjol')
-@section('page', 'Kalkulator pinjol')
+{% block title %}Kalkulator pinjol{% endblock %}
+{% block page %}Kalkulator pinjol{% endblock %}
 
-@section('content')
-<div x-data="kalkulatorPinjol(@js($defaults))" x-cloak class="space-y-6">
+{% block content %}
+<div x-data='kalkulatorPinjol({{ defaults|tojson }})' x-cloak class="space-y-6">
 
     <header>
         <p class="fs-eyebrow">Hitung dampak • Kalkulator edukasi</p>
@@ -13,7 +13,7 @@
     </header>
 
     <div class="flex gap-3 rounded-xl bg-warn-bg px-5 py-4 text-warn-text">
-        <x-icon name="info" class="mt-0.5 h-[18px] w-[18px] shrink-0" />
+        <span class="mt-0.5 shrink-0">{{ icon('info', 'h-[18px] w-[18px]') }}</span>
         <div>
             <p class="text-sm font-medium">Asumsi simulasi, bukan tarif resmi atau nasihat hukum</p>
             <p class="mt-1 text-[13px] leading-relaxed">Angka ini contoh untuk memahami risiko pinjol ilegal, bukan penawaran pinjaman. Kontrak nyata bisa memiliki biaya, denda, dan metode bunga berbeda.</p>
@@ -22,7 +22,7 @@
 
     <div class="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
 
-        {{-- Kolom kiri: form --}}
+        {# Kolom kiri: form #}
         <div class="space-y-5">
             <section class="fs-card">
                 <h2 class="fs-h2">Detail pinjaman</h2>
@@ -73,7 +73,7 @@
                 <div class="mt-5">
                     <button type="button" class="fs-btn" x-on:click="hitung()">
                         Hitung simulasi
-                        <x-icon name="calculator" class="h-4 w-4" />
+                        {{ icon('calculator', 'h-4 w-4') }}
                     </button>
                     <p class="mt-3 text-[11px] text-slate-400">Hasil otomatis diperbarui saat angka diubah • hasil contoh di sebelah kanan</p>
                 </div>
@@ -81,16 +81,16 @@
 
             <aside class="rounded-2xl bg-brand-mint p-5 text-brand">
                 <div class="flex items-center gap-2.5">
-                    <x-icon name="shield" class="h-[18px] w-[18px]" />
+                    {{ icon('shield', 'h-[18px] w-[18px]') }}
                     <h3 class="text-[15px] font-medium">Baca sebelum menyetujui</h3>
                 </div>
                 <p class="mt-3 text-[13px] leading-relaxed">Periksa total dana diterima, total pembayaran, jadwal, biaya, dan legalitas penyelenggara melalui kanal resmi OJK.</p>
             </aside>
         </div>
 
-        {{-- Kolom kanan: hasil --}}
+        {# Kolom kanan: hasil #}
         <div class="space-y-5">
-            {{-- Banner hasil --}}
+            {# Banner hasil #}
             <section x-ref="hasil" class="grid gap-5 rounded-2xl bg-brand-dark p-7 text-white transition-shadow duration-500 sm:grid-cols-[1fr_auto] sm:items-center"
                      x-bind:class="sorot ? 'ring-4 ring-brand/40' : ''">
                 <div class="min-w-0">
@@ -105,7 +105,7 @@
                 </div>
             </section>
 
-            {{-- Perhitungan terbuka --}}
+            {# Perhitungan terbuka #}
             <section class="fs-card">
                 <h2 class="fs-h2">Perhitungan terbuka</h2>
 
@@ -127,7 +127,7 @@
                 <p class="mt-4 text-xs text-slate-500">Diasumsikan lunas sekaligus pada akhir tenor; tidak ada cicilan, denda keterlambatan, atau biaya tambahan lain.</p>
             </section>
 
-            {{-- Grafik + tabel --}}
+            {# Grafik + tabel #}
             <section class="fs-card">
                 <div class="flex flex-wrap items-baseline justify-between gap-2">
                     <h2 class="fs-h2">Bagaimana tagihan bertambah?</h2>
@@ -170,59 +170,60 @@
         </div>
     </div>
 
-    {{-- Kalau sudah terlanjur --}}
+    {# Kalau sudah terlanjur #}
     <section class="fs-card">
         <div class="grid gap-6 md:grid-cols-[1.1fr_1fr_1fr_1fr] md:gap-8">
             <div>
                 <h2 class="text-[19px] font-medium text-ink">Kalau sudah terlanjur meminjam</h2>
                 <p class="mt-3 text-[13px] leading-relaxed text-slate-500">Ambil langkah yang bisa kamu kendalikan, satu per satu.</p>
             </div>
-            <div>
-                <x-icon name="file" class="h-5 w-5 text-brand" />
+            <div class="text-brand">
+                {{ icon('file', 'h-5 w-5') }}
                 <h3 class="mt-3 text-[15px] font-medium text-ink">Rapikan bukti</h3>
                 <p class="mt-2 text-xs leading-relaxed text-slate-500">Simpan kontrak, bukti transfer, dan riwayat penagihan.</p>
             </div>
-            <div>
-                <x-icon name="list-check" class="h-5 w-5 text-brand" />
+            <div class="text-brand">
+                {{ icon('list-check', 'h-5 w-5') }}
                 <h3 class="mt-3 text-[15px] font-medium text-ink">Petakan kewajiban</h3>
                 <p class="mt-2 text-xs leading-relaxed text-slate-500">Catat jatuh tempo; utamakan makan, tempat tinggal, dan kebutuhan dasar.</p>
             </div>
-            <div>
-                <x-icon name="messages" class="h-5 w-5 text-brand" />
+            <div class="text-brand">
+                {{ icon('messages', 'h-5 w-5') }}
                 <h3 class="mt-3 text-[15px] font-medium text-ink">Cari pendampingan</h3>
                 <p class="mt-2 text-xs leading-relaxed text-slate-500">Hubungi orang tepercaya dan kanal resmi OJK 157 untuk informasi pengaduan.</p>
             </div>
         </div>
     </section>
 </div>
-@endsection
+{% endblock %}
 
-@push('scripts')
+{% block scripts %}
+{% raw %}
 <script>
     function kalkulatorPinjol(awal) {
-        let chart = null;
+        var chart = null;
 
         // Plugin kecil: tulis total tagihan di atas tiap batang.
-        const labelTotal = {
+        var labelTotal = {
             id: 'labelTotal',
-            afterDatasetsDraw(c) {
-                const ctx = c.ctx;
-                const jumlah = c.data.labels.length;
-                const metas = c.data.datasets.map(function (d, i) { return c.getDatasetMeta(i); });
+            afterDatasetsDraw: function (c) {
+                var ctx = c.ctx;
+                var jumlah = c.data.labels.length;
+                var metas = c.data.datasets.map(function (d, i) { return c.getDatasetMeta(i); });
 
                 ctx.save();
                 ctx.font = '600 11px "Plus Jakarta Sans", sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
 
-                for (let i = 0; i < jumlah; i++) {
-                    let atas = Infinity;
-                    let x = null;
-                    let total = 0;
+                for (var i = 0; i < jumlah; i++) {
+                    var atas = Infinity;
+                    var x = null;
+                    var total = 0;
 
                     metas.forEach(function (m, di) {
                         if (m.hidden) return;
-                        const el = m.data[i];
+                        var el = m.data[i];
                         if (el) {
                             atas = Math.min(atas, el.y);
                             x = el.x;
@@ -237,7 +238,7 @@
                 }
 
                 ctx.restore();
-            },
+            }
         };
 
         return {
@@ -256,7 +257,7 @@
 
             // ----- Rumus -----
             bungaPada(t) {
-                const b = this.bunga / 100;
+                var b = this.bunga / 100;
                 if (this.jenisBunga === 'majemuk') {
                     return this.pokok * (Math.pow(1 + b, t) - 1);
                 }
@@ -274,25 +275,24 @@
 
             /** 5 titik hari proporsional terhadap tenor (tenor 30 => 0, 7, 14, 21, 30). */
             get titik() {
-                const t = this.tenor;
-                const kandidat = [0, Math.round(t * 0.23), Math.round(t * 0.46), Math.round(t * 0.7), t];
+                var t = this.tenor;
+                var kandidat = [0, Math.round(t * 0.23), Math.round(t * 0.46), Math.round(t * 0.7), t];
                 return kandidat
                     .filter(function (v, i) { return kandidat.indexOf(v) === i; })
                     .sort(function (a, b) { return a - b; });
             },
 
             get baris() {
-                return this.titik.map((h) => ({
-                    hari: h,
-                    bunga: this.bungaPada(h),
-                    total: this.totalPada(h),
-                }));
+                var self = this;
+                return this.titik.map(function (h) {
+                    return { hari: h, bunga: self.bungaPada(h), total: self.totalPada(h) };
+                });
             },
 
             get rumusAngka() {
-                const p = formatRupiah(this.pokok);
-                const b = formatAngka(this.bunga) + '%';
-                const hasil = formatRupiah(this.bungaAkhir);
+                var p = formatRupiah(this.pokok);
+                var b = formatAngka(this.bunga) + '%';
+                var hasil = formatRupiah(this.bungaAkhir);
                 if (this.jenisBunga === 'majemuk') {
                     return p + ' × ((1 + ' + b + ')^' + this.tenor + ' − 1) = ' + hasil;
                 }
@@ -301,23 +301,25 @@
 
             // ----- Siklus hidup -----
             init() {
+                var self = this;
                 this.buatChart();
                 this.perbaruiChart();
                 this.simpan();
 
-                ['pokokPinjaman', 'bungaHarian', 'tenorHari', 'biayaTetap', 'jenisBunga'].forEach((k) => {
-                    this.$watch(k, () => {
-                        this.perbaruiChart();
-                        this.simpan();
+                ['pokokPinjaman', 'bungaHarian', 'tenorHari', 'biayaTetap', 'jenisBunga'].forEach(function (k) {
+                    self.$watch(k, function () {
+                        self.perbaruiChart();
+                        self.simpan();
                     });
                 });
             },
 
             hitung() {
+                var self = this;
                 this.perbaruiChart();
                 this.simpan();
                 this.sorot = true;
-                setTimeout(() => { this.sorot = false; }, 900);
+                setTimeout(function () { self.sorot = false; }, 900);
                 if (window.innerWidth < 1024 && this.$refs.hasil) {
                     this.$refs.hasil.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
@@ -329,13 +331,13 @@
                     pokok: this.pokok,
                     tenor: this.tenor,
                     jenis: this.jenisBunga,
-                    waktu: Date.now(),
+                    waktu: Date.now()
                 });
             },
 
             // ----- Chart.js -----
             buatChart() {
-                const ctx = this.$refs.canvas.getContext('2d');
+                var ctx = this.$refs.canvas.getContext('2d');
 
                 chart = new Chart(ctx, {
                     type: 'bar',
@@ -344,8 +346,8 @@
                         datasets: [
                             { label: 'Pokok', data: [], backgroundColor: '#0D5C46', barPercentage: 0.55, categoryPercentage: 0.9 },
                             { label: 'Biaya tetap', data: [], backgroundColor: '#5B5BB5', barPercentage: 0.55, categoryPercentage: 0.9 },
-                            { label: 'Bunga', data: [], backgroundColor: '#AEB0E3', barPercentage: 0.55, categoryPercentage: 0.9 },
-                        ],
+                            { label: 'Bunga', data: [], backgroundColor: '#AEB0E3', barPercentage: 0.55, categoryPercentage: 0.9 }
+                        ]
                     },
                     options: {
                         responsive: true,
@@ -358,34 +360,35 @@
                                 callbacks: {
                                     label: function (item) { return ' ' + item.dataset.label + ': ' + formatRupiah(item.parsed.y); },
                                     footer: function (items) {
-                                        const total = items.reduce(function (s, i) { return s + i.parsed.y; }, 0);
+                                        var total = items.reduce(function (s, i) { return s + i.parsed.y; }, 0);
                                         return 'Total: ' + formatRupiah(total);
-                                    },
-                                },
-                            },
+                                    }
+                                }
+                            }
                         },
                         scales: {
                             x: { stacked: true, grid: { display: false }, border: { display: false } },
-                            y: { stacked: true, beginAtZero: true, display: false, grace: '4%' },
-                        },
+                            y: { stacked: true, beginAtZero: true, display: false, grace: '4%' }
+                        }
                     },
-                    plugins: [labelTotal],
+                    plugins: [labelTotal]
                 });
             },
 
             perbaruiChart() {
                 if (!chart) return;
-                const b = this.baris;
-                const pokok = this.pokok;
-                const biaya = this.biaya;
+                var b = this.baris;
+                var pokok = this.pokok;
+                var biaya = this.biaya;
 
                 chart.data.labels = b.map(function (x) { return 'Hari ' + x.hari; });
                 chart.data.datasets[0].data = b.map(function () { return pokok; });
                 chart.data.datasets[1].data = b.map(function () { return biaya; });
                 chart.data.datasets[2].data = b.map(function (x) { return x.bunga; });
                 chart.update();
-            },
+            }
         };
     }
 </script>
-@endpush
+{% endraw %}
+{% endblock %}

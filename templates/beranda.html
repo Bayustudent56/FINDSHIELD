@@ -1,10 +1,10 @@
-@extends('layouts.app')
+{% extends "layouts/base.html" %}
 
-@section('title', 'Beranda')
-@section('page', 'Beranda')
+{% block title %}Beranda{% endblock %}
+{% block page %}Beranda{% endblock %}
 
-@section('content')
-<div x-data="beranda(@js($state))" x-cloak class="space-y-8">
+{% block content %}
+<div x-data='beranda({{ state|tojson }})' x-cloak class="space-y-8">
 
     <header>
         <p class="fs-eyebrow">Mulai dari memahami</p>
@@ -12,11 +12,11 @@
         <p class="mt-3 text-[15px] text-slate-500">Kenali risikonya, hitung dampaknya, lalu susun langkah yang lebih sehat.</p>
     </header>
 
-    {{-- Hero --}}
+    {# Hero #}
     <section class="relative overflow-hidden rounded-2xl bg-brand-dark px-7 py-9 text-white sm:px-10 sm:py-11">
         <div class="relative z-10 max-w-[560px]">
             <p class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-white/80">
-                <x-icon name="shield" class="h-4 w-4" />
+                {{ icon('shield', 'h-4 w-4') }}
                 Ruang aman untuk belajar
             </p>
             <h2 class="mt-5 text-[28px] font-semibold leading-snug sm:text-[32px]">Bukan soal cepat kaya. Soal lebih siap mengambil keputusan.</h2>
@@ -26,13 +26,13 @@
                         class="inline-flex items-center gap-2 rounded-lg bg-[#0E7A63] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#12906F] focus:outline-none focus:ring-2 focus:ring-white/50"
                         x-on:click="document.getElementById('alat').scrollIntoView({ behavior: 'smooth', block: 'start' })">
                     Jelajahi alat belajar
-                    <x-icon name="arrow-right" class="h-4 w-4" />
+                    {{ icon('arrow-right', 'h-4 w-4') }}
                 </button>
                 <span class="text-xs text-white/70">Tanpa uang asli • Tanpa menghakimi</span>
             </div>
         </div>
 
-        {{-- Visual perisai + floating card --}}
+        {# Visual perisai + floating card #}
         <div class="pointer-events-none absolute inset-y-0 right-6 hidden w-[380px] lg:block" aria-hidden="true">
             <div class="absolute left-1/2 top-1/2 h-[210px] w-[210px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"></div>
             <div class="absolute left-1/2 top-1/2 h-[170px] w-[170px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"></div>
@@ -41,14 +41,14 @@
             </div>
 
             <div class="absolute left-0 top-9 flex items-center gap-3 rounded-xl bg-white px-4 py-3 text-ink shadow-lg">
-                <x-icon name="chart" class="h-5 w-5 text-brand" />
+                <span class="text-brand">{{ icon('chart', 'h-5 w-5') }}</span>
                 <div>
                     <p class="text-[10px] text-slate-500">Pahami</p>
                     <p class="text-[13px] font-medium">Risiko &amp; angka</p>
                 </div>
             </div>
             <div class="absolute bottom-7 right-0 flex items-center gap-3 rounded-xl bg-white px-4 py-3 text-ink shadow-lg">
-                <x-icon name="sprout" class="h-5 w-5 text-brand" />
+                <span class="text-brand">{{ icon('sprout', 'h-5 w-5') }}</span>
                 <div>
                     <p class="text-[10px] text-slate-500">Bangun</p>
                     <p class="text-[13px] font-medium">Kebiasaan sehat</p>
@@ -57,7 +57,7 @@
         </div>
     </section>
 
-    {{-- 3 kartu alat --}}
+    {# 3 kartu alat #}
     <section id="alat" class="scroll-mt-24">
         <div class="mb-4 flex flex-wrap items-baseline justify-between gap-2">
             <h2 class="fs-h2">Mau mulai dari mana?</h2>
@@ -65,60 +65,60 @@
         </div>
 
         <div class="grid gap-5 md:grid-cols-3">
-            {{-- Judol --}}
+            {# Judol #}
             <article class="fs-card flex flex-col">
                 <div class="flex items-start justify-between">
-                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-mint text-brand"><x-icon name="chart" class="h-6 w-6" /></span>
+                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-mint text-brand">{{ icon('chart', 'h-6 w-6') }}</span>
                     <span class="text-xs text-slate-400">± 5 menit</span>
                 </div>
                 <h3 class="mt-5 text-xl font-medium text-ink">Pahami algoritma judol</h3>
                 <p class="mt-2 text-sm leading-relaxed text-slate-500">Lihat mengapa peluang sesaat berbeda dari risiko kerugian jangka panjang.</p>
                 <div class="mt-5 rounded-xl bg-slate-50 px-4 py-4">
-                    <p class="text-[26px] font-medium leading-none text-brand" x-text="formatRupiah(judol.ev)">{{ $state['judol']['teks'] }}</p>
+                    <p class="text-[26px] font-medium leading-none text-brand" x-text="formatRupiah(judol.ev)">{{ state.judol.teks }}</p>
                     <p class="mt-2 text-xs text-slate-500" x-text="judol.dariUser ? 'Nilai harapan per putaran dari simulasi terakhirmu' : 'Nilai harapan per putaran pada contoh'">Nilai harapan per putaran pada contoh</p>
                 </div>
-                <a href="{{ route('edukasi-judol') }}" class="mt-auto flex items-center justify-between pt-5 text-sm font-medium text-brand hover:underline">
-                    Buka simulasi edukasi <x-icon name="arrow-up-right" class="h-4 w-4" />
+                <a href="{{ url_for('edukasi_judol') }}" class="mt-auto flex items-center justify-between pt-5 text-sm font-medium text-brand hover:underline">
+                    Buka simulasi edukasi {{ icon('arrow-up-right', 'h-4 w-4') }}
                 </a>
             </article>
 
-            {{-- Pinjol --}}
+            {# Pinjol #}
             <article class="fs-card flex flex-col">
                 <div class="flex items-start justify-between">
-                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-iris-soft text-iris"><x-icon name="calculator" class="h-6 w-6" /></span>
+                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-iris-soft text-iris">{{ icon('calculator', 'h-6 w-6') }}</span>
                     <span class="text-xs text-slate-400">± 5 menit</span>
                 </div>
                 <h3 class="mt-5 text-xl font-medium text-ink">Cek beban bunga pinjol</h3>
                 <p class="mt-2 text-sm leading-relaxed text-slate-500">Bongkar akumulasi bunga dan biaya agar total tagihan tidak terasa abstrak.</p>
                 <div class="mt-5 rounded-xl bg-slate-50 px-4 py-4">
-                    <p class="text-[26px] font-medium leading-none text-iris" x-text="formatRupiah(pinjol.total)">{{ $state['pinjol']['teks'] }}</p>
+                    <p class="text-[26px] font-medium leading-none text-iris" x-text="formatRupiah(pinjol.total)">{{ state.pinjol.teks }}</p>
                     <p class="mt-2 text-xs text-slate-500" x-text="pinjol.dariUser ? 'Total tagihan hari ke-' + pinjol.tenor + ' dari pokok ' + formatRupiah(pinjol.pokok) : 'Contoh total tagihan dari pokok Rp1 juta'">Contoh total tagihan dari pokok Rp1 juta</p>
                 </div>
-                <a href="{{ route('kalkulator-pinjol') }}" class="mt-auto flex items-center justify-between pt-5 text-sm font-medium text-brand hover:underline">
-                    Hitung simulasi bunga <x-icon name="arrow-up-right" class="h-4 w-4" />
+                <a href="{{ url_for('kalkulator_pinjol') }}" class="mt-auto flex items-center justify-between pt-5 text-sm font-medium text-brand hover:underline">
+                    Hitung simulasi bunga {{ icon('arrow-up-right', 'h-4 w-4') }}
                 </a>
             </article>
 
-            {{-- Kelola uang --}}
+            {# Kelola uang #}
             <article class="fs-card flex flex-col">
                 <div class="flex items-start justify-between">
-                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-mint text-brand"><x-icon name="wallet" class="h-6 w-6" /></span>
+                    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-mint text-brand">{{ icon('wallet', 'h-6 w-6') }}</span>
                     <span class="text-xs text-slate-400">± 5 menit</span>
                 </div>
                 <h3 class="mt-5 text-xl font-medium text-ink">Beri uangmu arah</h3>
                 <p class="mt-2 text-sm leading-relaxed text-slate-500">Bagi gaji atau uang saku, siapkan cadangan, dan temukan ide tambahan penghasilan.</p>
                 <div class="mt-5 rounded-xl bg-slate-50 px-4 py-4">
-                    <p class="text-[26px] font-medium leading-none text-brand" x-text="uang.kebutuhan + ' / ' + uang.keinginan + ' / ' + uang.masaDepan">{{ $state['uang']['teks'] }}</p>
+                    <p class="text-[26px] font-medium leading-none text-brand" x-text="uang.kebutuhan + ' / ' + uang.keinginan + ' / ' + uang.masaDepan">{{ state.uang.teks }}</p>
                     <p class="mt-2 text-xs text-slate-500" x-text="uang.dariUser ? 'Rasio alokasi yang terakhir kamu atur' : 'Titik awal alokasi, bukan aturan kaku'">Titik awal alokasi, bukan aturan kaku</p>
                 </div>
-                <a href="{{ route('kelola-uang') }}" class="mt-auto flex items-center justify-between pt-5 text-sm font-medium text-brand hover:underline">
-                    Lihat panduan uang <x-icon name="arrow-up-right" class="h-4 w-4" />
+                <a href="{{ url_for('kelola_uang') }}" class="mt-auto flex items-center justify-between pt-5 text-sm font-medium text-brand hover:underline">
+                    Lihat panduan uang {{ icon('arrow-up-right', 'h-4 w-4') }}
                 </a>
             </article>
         </div>
     </section>
 
-    {{-- Checklist + bantuan --}}
+    {# Checklist + bantuan #}
     <section class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_370px]">
         <div class="fs-card">
             <div class="flex flex-wrap items-baseline justify-between gap-2">
@@ -159,7 +159,7 @@
 
         <aside class="rounded-2xl border border-brand/10 bg-brand-mint p-6 text-brand">
             <div class="flex items-center gap-3">
-                <x-icon name="heart" class="h-5 w-5" />
+                {{ icon('heart', 'h-5 w-5') }}
                 <h2 class="text-[18px] font-medium">Sedang merasa tertekan?</h2>
             </div>
             <p class="mt-4 text-sm leading-relaxed">Kamu tidak harus menghadapi masalah uang sendirian. Cerita ke orang tepercaya dan hindari menutup utang dengan utang baru.</p>
@@ -170,12 +170,13 @@
         </aside>
     </section>
 </div>
-@endsection
+{% endblock %}
 
-@push('scripts')
+{% block scripts %}
+{% raw %}
 <script>
     function beranda(awal) {
-        const KUNCI_LANGKAH = 'finshield.checklist';
+        var KUNCI_LANGKAH = 'finshield.checklist';
 
         return {
             judol: awal.judol,
@@ -186,26 +187,26 @@
 
             init() {
                 this.muatRingkasan();
-                const tersimpan = bacaLokal(KUNCI_LANGKAH);
+                var tersimpan = bacaLokal(KUNCI_LANGKAH);
                 if (Array.isArray(tersimpan)) {
-                    const idValid = this.langkah.map(function (l) { return l.id; });
+                    var idValid = this.langkah.map(function (l) { return l.id; });
                     this.tercentang = tersimpan.filter(function (id) { return idValid.indexOf(id) !== -1; });
                 }
             },
 
             /** Ambil hasil terakhir dari localStorage (diisi oleh halaman simulasi masing-masing). */
             muatRingkasan() {
-                const j = bacaLokal('finshield.judol');
+                var j = bacaLokal('finshield.judol');
                 if (j && typeof j.ev === 'number' && isFinite(j.ev)) {
                     this.judol = { ev: j.ev, houseEdge: j.houseEdge, dariUser: true };
                 }
 
-                const p = bacaLokal('finshield.pinjol');
+                var p = bacaLokal('finshield.pinjol');
                 if (p && typeof p.total === 'number' && isFinite(p.total)) {
                     this.pinjol = { total: p.total, pokok: p.pokok, tenor: p.tenor, dariUser: true };
                 }
 
-                const u = bacaLokal('finshield.uang');
+                var u = bacaLokal('finshield.uang');
                 if (u && typeof u.kebutuhan === 'number') {
                     this.uang = { kebutuhan: u.kebutuhan, keinginan: u.keinginan, masaDepan: u.masaDepan, dariUser: true };
                 }
@@ -235,8 +236,9 @@
 
             get persen() {
                 return this.langkah.length ? Math.round((this.selesai / this.langkah.length) * 100) : 0;
-            },
+            }
         };
     }
 </script>
-@endpush
+{% endraw %}
+{% endblock %}
